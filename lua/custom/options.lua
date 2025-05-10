@@ -26,3 +26,9 @@ function FormatJson(inline)
 end
 vim.api.nvim_set_keymap('n', '<leader>jf', ':lua FormatJson(false)<CR>', { noremap = true, silent = true, desc = 'Format JSON (Indented)' })
 vim.api.nvim_set_keymap('n', '<leader>jc', ':lua FormatJson(true)<CR>', { noremap = true, silent = true, desc = 'Format JSON (Compact)' })
+
+-- tab options
+vim.opt.tabstop = 2
+vim.opt.softtabstop = 2
+vim.opt.shiftwidth = 2
+vim.opt.expandtab = true
