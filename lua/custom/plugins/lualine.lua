@@ -1,61 +1,94 @@
 return {
   'nvim-lualine/lualine.nvim',
   dependencies = { 'nvim-tree/nvim-web-devicons' },
-  opts = function()
-    return {
+  event = 'VeryLazy',
+  config = function()
+    vim.opt.laststatus = 3
+    -- Custom Lualine component to show attached language server
+    local clients_lsp = function()
+      -- local bufnr = vim.api.nvim_get_current_buf()
+
+      local clients = vim.lsp.get_clients()
+      if next(clients) == nil then
+        return ''
+      end
+
+      local c = {}
+      for _, client in pairs(clients) do
+        table.insert(c, client.name)
+      end
+      -- return ' ' .. table.concat(c, '|')
+      return '  ' .. table.concat(c, '|')
+    end
+
+    local custom_catppuccin = require 'lualine.themes.catppuccin'
+
+    -- Custom colours
+    -- custom_catppuccin.normal.b.fg = '#cad3f5'
+    -- custom_catppuccin.insert.b.fg = '#cad3f5'
+    -- custom_catppuccin.visual.b.fg = '#cad3f5'
+    -- custom_catppuccin.replace.b.fg = '#cad3f5'
+    -- custom_catppuccin.command.b.fg = '#cad3f5'
+    -- custom_catppuccin.inactive.b.fg = '#cad3f5'
+    --
+    -- custom_catppuccin.normal.c.fg = '#6e738d'
+    -- custom_catppuccin.normal.c.bg = '#1e2030'
+
+    require('lualine').setup {
       options = {
-        icons_enabled = true,
-        theme = 'catppuccin',
+        theme = custom_catppuccin,
         component_separators = '',
         section_separators = { left = '', right = '' },
+        disabled_filetypes = { 'alpha', 'Outline', 'NVimTree' },
       },
       sections = {
-        lualine_a = { { 'mode', icon = '', separator = { left = '' }, right_padding = 2 } },
+        lualine_a = {
+          { 'mode', separator = { left = ' ', right = '' }, icon = '' },
+        },
         lualine_b = {
-          'branch',
+          {
+            'branch',
+            icon = '',
+          },
+          {
+            'diff',
+            symbols = { added = ' ', modified = ' ', removed = ' ' },
+            colored = false,
+          },
         },
         lualine_c = {
           {
-            'filename',
-            icon = '',
+            'filetype',
+            colored = false,
+            icon_only = true,
+            padding = { left = 1, right = 0 },
           },
-          '%=' --[[ add your center components here in place of this comment ]],
+          {
+            'filename',
+            path = 4,
+          },
         },
         lualine_x = {
-          -- 'encoding',
-          {
-            'location',
-            left_padding = 0,
-          },
+          'encoding',
+          -- {
+          --   'fileformat',
+          --   symbols = {
+          --     unix = '',
+          --     dos = '',
+          --     mac = '',
+          --   },
+          -- },
         },
         lualine_y = {
-          -- {
-          --   'filetype',
-          --   colored = false, -- Displays filetype icon in color if set to true
-          --   icon_only = false, -- Display only an icon for filetype
-          --   icon = { align = 'left' }, -- Display filetype icon on the right hand side
-          --   -- icon = { 'X', align = 'right' },
-          --   -- Icon string ^ in table is ignored in filetype component
-          -- },
-          -- { 'progress' },
           {
-            'fileformat',
-            symbols = {
-              unix = '', -- e712
-              dos = '', -- e70f
-              mac = '', -- e711
-            },
-            -- separator = { right = '', left = '' },
-            left_padding = 20,
+            'diagnostics',
+            symbols = { error = ' ', warn = ' ', info = ' ', hint = ' ' },
+            update_in_insert = true,
           },
+          clients_lsp,
         },
         lualine_z = {
-          {
-            -- 'location',
-            'encoding',
-            separator = { right = '' },
-            left_padding = 2,
-          },
+          { 'location', separator = { left = '', right = ' ' }, icon = '' },
         },
       },
       inactive_sections = {
@@ -66,8 +99,7 @@ return {
         lualine_y = {},
         lualine_z = { 'location' },
       },
-      tabline = {},
-      extensions = {},
+      extensions = { 'toggleterm', 'trouble' },
     }
   end,
 }
