@@ -32,3 +32,9 @@ vim.opt.tabstop = 2
 vim.opt.softtabstop = 2
 vim.opt.shiftwidth = 2
 vim.opt.expandtab = true
+
+-- run python
+function run_python()
+  vim.cmd '!python3 %'
+end
+vim.api.nvim_set_keymap('n', '<leader>jy', ':lua run_python()<CR>', { noremap = true, silent = true, desc = 'Run Python File' })

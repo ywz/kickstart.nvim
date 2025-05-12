@@ -91,7 +91,7 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
-vim.g.have_nerd_font = true
+vim.g.have_nerd_font = false
 
 -- [[ Setting options ]]
 -- See `:help vim.opt`
@@ -689,6 +689,49 @@ require('lazy').setup({
               -- diagnostics = { disable = { 'missing-fields' } },
             },
           },
+        },
+        basedpyright = {
+          enabled = true,
+          settings = {
+            basedpyright = {
+              disableOrganizeImports = true,
+              -- https://github.com/DetachHead/basedpyright/issues/203
+              typeCheckingMode = 'off',
+            },
+          },
+        },
+        -- jedi_language_server = {
+        --   enabled = false,
+        --   init_options = {
+        --     completion = {
+        --       disableSnippets = true,
+        --     },
+        --   },
+        -- },
+        ruff = {
+          on_attach = function(client, bufnr)
+            common_on_attach_handler(client, bufnr)
+            client.server_capabilities.disableHoverProvider = false
+
+            -- Create ruff commands
+            vim.api.nvim_create_user_command('RuffAutoFix', function()
+              vim.lsp.buf.execute_command {
+                command = 'ruff.applyAutofix',
+                arguments = {
+                  { uri = vim.uri_from_bufnr(0) },
+                },
+              }
+            end, { desc = 'Ruff: Fix all auto-fixable problems' })
+
+            vim.api.nvim_create_user_command('RuffOrganizeImports', function()
+              vim.lsp.buf.execute_command {
+                command = 'ruff.applyOrganizeImports',
+                arguments = {
+                  { uri = vim.uri_from_bufnr(0) },
+                },
+              }
+            end, { desc = 'Ruff: Format imports' })
+          end,
         },
       }
 

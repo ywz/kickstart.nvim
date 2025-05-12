@@ -14,14 +14,27 @@ return {
       end
 
       local c = {}
+      local copilot_name = ' '
       for _, client in pairs(clients) do
-        table.insert(c, client.name)
+        if string.find(client.name, 'Copilot') then
+          table.insert(c, copilot_name)
+        else
+          table.insert(c, client.name)
+        end
       end
-      -- return ' ' .. table.concat(c, '|')
-      return '  ' .. table.concat(c, '|')
+      -- sort c putting Copilot at the end
+      table.sort(c, function(a, b)
+        if a == copilot_name then
+          return false
+        elseif b == copilot_name then
+          return true
+        end
+        return a < b
+      end)
+      return '  ' .. table.concat(c, ' ⋮ ')
     end
 
-    local custom_catppuccin = require 'lualine.themes.catppuccin'
+    -- local custom_catppuccin = require 'lualine.themes.catppuccin'
 
     -- Custom colours
     -- custom_catppuccin.normal.b.fg = '#cad3f5'
@@ -36,7 +49,7 @@ return {
 
     require('lualine').setup {
       options = {
-        theme = custom_catppuccin,
+        -- theme = custom_catppuccin,
         component_separators = '',
         section_separators = { left = '', right = '' },
         disabled_filetypes = { 'alpha', 'Outline', 'NVimTree' },
@@ -57,12 +70,12 @@ return {
           },
         },
         lualine_c = {
-          {
-            'filetype',
-            colored = false,
-            icon_only = true,
-            padding = { left = 1, right = 0 },
-          },
+          -- {
+          --   'filetype',
+          --   colored = false,
+          --   icon_only = true,
+          --   padding = { left = 1, right = 0 },
+          -- },
           {
             'filename',
             path = 4,

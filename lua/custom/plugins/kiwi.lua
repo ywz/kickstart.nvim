@@ -3,12 +3,14 @@ return {
   opts = {
     {
       name = 'work',
-      path = '/Users/wz/Documents/kiwi/work/',
+      path = vim.env.HOME .. '/Documents/kiwi/work/',
     },
     {
       name = 'personal',
-      path = '/Users/wz/Documents/kiwi/personal/',
+      path = vim.env.HOME .. '/Documents/kiwi/personal/',
     },
+    --- Optional: Set the default wiki to open when using `:Kiwi`
+    default_wiki = 'work',
   },
   keys = {
     { '<leader>ww', ':lua require("kiwi").open_wiki_index("work")<cr>', desc = 'Open Wiki index' },
