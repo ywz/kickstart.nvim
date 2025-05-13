@@ -14,7 +14,7 @@ return {
       end
 
       local c = {}
-      local copilot_name = ' '
+      local copilot_name = ' '
       for _, client in pairs(clients) do
         if string.find(client.name, 'Copilot') then
           table.insert(c, copilot_name)
