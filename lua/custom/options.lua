@@ -38,3 +38,13 @@ function run_python()
   vim.cmd '!python3 %'
 end
 vim.api.nvim_set_keymap('n', '<leader>jy', ':lua run_python()<CR>', { noremap = true, silent = true, desc = 'Run Python File' })
+
+-- render-markdown
+require('render-markdown').setup {
+  completions = { blink = { enabled = true } },
+}
+
+--leap
+vim.keymap.set({ 'n', 'x', 'o' }, 's', '<Plug>(leap-forward)')
+vim.keymap.set({ 'n', 'x', 'o' }, 'S', '<Plug>(leap-backward)')
+vim.keymap.set({ 'n', 'x', 'o' }, 'gs', '<Plug>(leap-from-window)')

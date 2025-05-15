@@ -690,16 +690,17 @@ require('lazy').setup({
             },
           },
         },
-        basedpyright = {
-          enabled = true,
-          settings = {
-            basedpyright = {
-              disableOrganizeImports = true,
-              -- https://github.com/DetachHead/basedpyright/issues/203
-              typeCheckingMode = 'off',
-            },
-          },
-        },
+
+        -- basedpyright = {
+        --   enabled = true,
+        --   settings = {
+        --     basedpyright = {
+        --       disableOrganizeImports = true,
+        --       -- https://github.com/DetachHead/basedpyright/issues/203
+        --       typeCheckingMode = 'off',
+        --     },
+        --   },
+        -- },
         -- jedi_language_server = {
         --   enabled = false,
         --   init_options = {
@@ -708,31 +709,31 @@ require('lazy').setup({
         --     },
         --   },
         -- },
-        ruff = {
-          on_attach = function(client, bufnr)
-            common_on_attach_handler(client, bufnr)
-            client.server_capabilities.disableHoverProvider = false
-
-            -- Create ruff commands
-            vim.api.nvim_create_user_command('RuffAutoFix', function()
-              vim.lsp.buf.execute_command {
-                command = 'ruff.applyAutofix',
-                arguments = {
-                  { uri = vim.uri_from_bufnr(0) },
-                },
-              }
-            end, { desc = 'Ruff: Fix all auto-fixable problems' })
-
-            vim.api.nvim_create_user_command('RuffOrganizeImports', function()
-              vim.lsp.buf.execute_command {
-                command = 'ruff.applyOrganizeImports',
-                arguments = {
-                  { uri = vim.uri_from_bufnr(0) },
-                },
-              }
-            end, { desc = 'Ruff: Format imports' })
-          end,
-        },
+        -- ruff = {
+        --   on_attach = function(client, bufnr)
+        --     common_on_attach_handler(client, bufnr)
+        --     client.server_capabilities.disableHoverProvider = false
+        --
+        --     -- Create ruff commands
+        --     vim.api.nvim_create_user_command('RuffAutoFix', function()
+        --       vim.lsp.buf.execute_command {
+        --         command = 'ruff.applyAutofix',
+        --         arguments = {
+        --           { uri = vim.uri_from_bufnr(0) },
+        --         },
+        --       }
+        --     end, { desc = 'Ruff: Fix all auto-fixable problems' })
+        --
+        --     vim.api.nvim_create_user_command('RuffOrganizeImports', function()
+        --       vim.lsp.buf.execute_command {
+        --         command = 'ruff.applyOrganizeImports',
+        --         arguments = {
+        --           { uri = vim.uri_from_bufnr(0) },
+        --         },
+        --       }
+        --     end, { desc = 'Ruff: Format imports' })
+        --   end,
+        -- },
       }
 
       -- Ensure the servers and tools above are installed
@@ -755,7 +756,7 @@ require('lazy').setup({
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
       require('mason-lspconfig').setup {
-        ensure_installed = {}, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
+        ensure_installed = { 'marksman' }, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
         automatic_installation = false,
         handlers = {
           function(server_name)
@@ -1050,4 +1051,5 @@ require('lazy').setup({
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
 
+-- options
 require 'custom.options'
