@@ -40,9 +40,9 @@ end
 vim.api.nvim_set_keymap('n', '<leader>jy', ':lua run_python()<CR>', { noremap = true, silent = true, desc = 'Run Python File' })
 
 -- render-markdown
-require('render-markdown').setup {
-  completions = { blink = { enabled = true } },
-}
+-- require('render-markdown').setup {
+--   completions = { blink = { enabled = true } },
+-- }
 
 --leap
 vim.keymap.set({ 'n', 'x', 'o' }, 's', '<Plug>(leap-forward)')
